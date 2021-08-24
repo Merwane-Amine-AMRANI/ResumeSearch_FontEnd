@@ -13,14 +13,14 @@ export class AdminhomeComponent implements OnInit {
   search = new Search();
   results: Array<Result> = [];
 
-  constructor(private _elasticService: ElasticService,
-              private _fileService: FileService) { }
+  constructor(private elasticService: ElasticService,
+              private fileService: FileService) { }
 
   ngOnInit(): void {
   }
 
   clean(obj) {
-    for (let propName in obj) {
+    for (const propName in obj) {
       if (obj[propName] === null || obj[propName] === undefined || obj[propName] === '') {
         delete obj[propName];
       }
@@ -32,7 +32,7 @@ export class AdminhomeComponent implements OnInit {
     console.log('yes');
     this.clean(this.search);
     console.log(this.search);
-    this._elasticService.searchDescriptionFromRemote(this.search).subscribe(
+    this.elasticService.searchDescriptionFromRemote(this.search).subscribe(
       data => {
         console.log(data);
         this.results = data;
@@ -44,7 +44,7 @@ export class AdminhomeComponent implements OnInit {
   }
 
   openPdf(id: number) {
-    this._fileService.getFilesFromRemote(id).subscribe(
+    this.fileService.getFilesFromRemote(id).subscribe(
       data => {
         console.log('File Fetched Successfully');
         const byteString = atob(data.fileByte);
